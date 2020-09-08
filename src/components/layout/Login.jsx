@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import amw from './AMW_Logo.svg';
-// import { Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import Joi from  'joi-browser';
+import UserContext from './UserContext';
 
 class Login extends Component {
     state = { 
@@ -26,45 +28,50 @@ class Login extends Component {
           password:this.state.password,
         }
 
-        
         ;
     try {
         axios.post('http://localhost:5000/api/users/login',  user)
           .then(res => {
               const {data} = res;
             let z = (Object.values(data));
-           let y = console.log(z[0])
+           let y = z[0]
+          
            
-            this.setState({message:z,success:y})
+            // this.setState({message:z,success:y})
+            this.setState({success:y})
           }).error(error=>{
             // console.log(error.data)
            
           })
     } catch (error) {
         
-    }
-        
-
-          
+    }          
       }
     
     render() { 
-        // console.log(this.state);
-        // console.log(this.state.message)
-        if (this.state.success===true){
+      
+        if ( this.state.success == true)
             return(<div style={{
                 backgroundColor:'#e0ece4',height:'700',textAlign:"center",paddingTop:200,paddingBottom:200
             }}><h1>Congratulations, You've Logged IN</h1></div>)
-        }
+        
         return ( 
               
+
               <div className='form-group' style={{
           backgroundColor:'#e0ece4',
           height:600
           
         }}
          >
-         
+         <UserContext.Consumer>
+              {
+                data =><div>{data.status.userInfo.name}</div>
+              
+
+              
+              }
+              </UserContext.Consumer>
         <div style={{
         paddingTop:60,paddingBottom:180
       }}>
@@ -106,10 +113,11 @@ class Login extends Component {
               margin:'auto'
             }} type="submit">Submit</button>
             </div>
-            <h4  style={{textAlign:"center",color:'white'}}>{this.state.message}</h4>
+            {/* <h4  style={{textAlign:"center",color:'white'}}>{this.state.message}</h4> */}
           </form>
           </div>
-        </div> );
+        </div> 
+        );
     }
 }
 

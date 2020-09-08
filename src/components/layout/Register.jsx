@@ -6,17 +6,17 @@ import Joi from  'joi-browser';
 import'bootstrap/dist/css/bootstrap.min.css';
 class Register extends Component {
     state = { 
-        name:'',
-        username:'',
-        password:'',
-        password2:'',
         errors:{
+          name:'',
+          username:'',
+          password:'',
+          password2:''
         },
-        status:null,
+        status:false,
         account:{
           name:'',username:'',password:'',password2:''
-        }
-
+        },
+        message:''
      }
     
      schema = {
@@ -29,23 +29,6 @@ class Register extends Component {
 
      validate = () => {
 
-      // const errors = {};
-      // const {account} = this.state;
-      // if (account.name.trim()==='')
-      //   errors.name='Name is required';
-      // if (account.username.trim()==='')
-      //   errors.username='Email is required';
-      // if (account.password.trim()==='')
-      //   errors.password='Password is required';
-      // if(account.password2.trim()==='')
-      //   errors.password2='Password confirmation is required'     
-      
-      
-      //   return  Object.keys(errors).length === 0 ? null :errors;
-
-
-
-
        const options = {abortEarly:false};
        const {error} = Joi.validate(this.state.account,this.schema,options);
        if (!error)return null;
@@ -55,38 +38,35 @@ class Register extends Component {
        return errors;
 
 
-
-
      }
-     validateProperty = ({name,value}) =>{
-       const obj = {[name]:value};
-       const schema = {[name]:this.scema[name]};
-       const {error} = Joi.validate(obj,schema);
-       return error ? error.details[0].message:null;
-     }
+    //  validateProperty = ({name,value}) =>{
+    //    const obj = {[name]:value};
+    //    const schema = {[name]:this.schema[name]};
+    //    const {error} = Joi.validate(obj,schema);
+    //    return error ? error.details[0].message:null;
+    //  }
 
 
     handleChange = event => {
 
-        // const errors = {...this.state.error};
+        const errors = {...this.state.error};
         // const errorMessage = this.validateProperty(input);
         // if(errorMessage) errors[input.name] = errorMessage;
         // else delete errors[input.name]
 
         // const account = {...this.state.account};
         // account[input.name] = input.value;
-
-
         // this.setState({[event.target.name] : event.target.value });
+        // console.log(event.target.name)
 
 
-      //   console.log(event.target.name)
-      //   this.setState({
-      //     account: {
-      //       ...this.state.account,
-      //       [event.target.name]: event.target.value
-      // }
-      //   })
+        this.setState({
+          account: {
+            ...this.state.account,
+            [event.target.name]: event.target.value
+      },errors:{...this.state.errors,
+      [event.target.name]:''}
+        })
       }
     
     handleSubmit = event => {
@@ -98,9 +78,12 @@ class Register extends Component {
 
     const errors = this.validate();
     console.log(errors)
-    this.setState({errors})
-    // console.log(errors)
-    if (errors) return;
+    
+    
+    if (errors){
+      this.setState({errors});
+      return;
+    } 
 
         const user = {
           name: this.state.account.name,
@@ -113,34 +96,29 @@ class Register extends Component {
           .then(res => {
             let {request,status,errors,error} = res;
             let {responseText} = request;
-            // console.log(status);   
-            // console.log(error)
-            console.log(responseText);
+            // console.log(Object.values(res.data))
 
-            // let z = (Object.values(responseText));
-          //  let y = console.log(z)
-            this.setState({message:responseText})
+            this.setState({message:responseText , status:res.data.success})
+            // console.log(z)
           })
           
       }
     
     render() { 
-        // console.log(this.state.account);
-      // if (this.){
-      //   return(
-      //     <div style={{
-      //       backgroundColor:'#e0ece4',textAlign:'center',paddingTop:200,paddingBottom:200
-      //     }}><h1>Congratulations, You have signed up</h1></div>
-      //   )
-      // }
-      console.log(Joi)
+      let nameErrorLen = this.state.errors.name.length;
+      let usernameErrorLen = this.state.errors.username.length;
+      let passErrorLen = this.state.errors.password.length;
+      let pass2ErrorLen = this.state.errors.password2.length;
+
+
+
+      if (this.state.status)return(
+        <div><h2>Congratulationss</h2></div>
+      )
 
         return ( <div className='form-group' style={{
           backgroundColor:'#e0ece4'
-          // height:'100%',
-          
-        }}
-         >
+        }}>
         <div style={{
         paddingTop:60,paddingBottom:180
       }}>
@@ -159,7 +137,7 @@ class Register extends Component {
               <input type="text" class  ="form-control" value={this.state.account.name}
               autoComplete='off' aria-describedby="emailHelp" name="name" 
               onChange={this.handleChange} placeholder='Enter Your Name'/>
-              <div className='alert alert-danger'>{this.state.errors.name}</div>
+              <div className={nameErrorLen === 0? '':'alert alert-danger'}>{this.state.errors.name}</div>
               </div>
 
               <div class="form-group">
@@ -167,32 +145,28 @@ class Register extends Component {
                 <input type='email' name='username' value={this.state.account.email} autoComplete='off'
                  onChange={this.handleChange} className='form-control'
                   placeholder='Enter Email'/>
-                  <div className='alert alert-danger'>{this.state.errors.username}</div>
-                {/* <div className='alert alert-danger'> this</div> */}
+                  <div className={usernameErrorLen === 0? '':'alert alert-danger'}>{this.state.errors.username}</div>
                 </div>
                
                 <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
                 <input type='password' name='password' onChange={this.handleChange}
                   placeholder='Type Your Password' value={this.state.account.password}></input>
-                  <div className='alert alert-danger'>{this.state.errors.password}</div>
+                  <div className={passErrorLen === 0? '':'alert alert-danger'}>{this.state.errors.password}</div>
 </div>
                 <div class="form-group">
                 <label for="exampleInputPassword1">Type Password Again</label>
                 <input type='password' name='password2'  onChange={this.handleChange}  value={this.state.account.password2} placeholder='Confirm Your Password'></input>
-                <div className='alert alert-danger'>{this.state.errors.password2}</div>
+                <div className={pass2ErrorLen === 0? '':'alert alert-danger'}>{this.state.errors.password2}</div>
                 </div>
-                {/* <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div> */}
+               
             <div style={{textAlign:'center'}}>
             <button className='btn btn-danger btn-lg mt-3' style={{
               margin:'auto'
             }} type="submit">Submit</button>
             </div>
             <h4 style={{color:'white'}}>
-              {/* {this.state.errors} */}
+            {this.state.message}
             </h4>
           </form>
           </div>
