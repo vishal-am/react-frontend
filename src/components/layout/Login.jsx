@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import amw from './AMW_Logo.svg';
-import { Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 import Joi from  'joi-browser';
 import UserContext from './UserContext';
 
@@ -12,7 +18,8 @@ class Login extends Component {
         password:'',
         error:'',
         success:false,
-        message:null
+        message:null,
+        isLoggedIn:false
      }
 
     handleChange = event => {
@@ -26,19 +33,18 @@ class Login extends Component {
         const user = {
           email: this.state.username,
           password:this.state.password,
-        }
+        };
 
-        ;
     try {
         axios.post('http://localhost:5000/api/users/login',  user)
           .then(res => {
               const {data} = res;
             let z = (Object.values(data));
            let y = z[0]
-          
-           
-            // this.setState({message:z,success:y})
-            this.setState({success:y})
+          //  console.log(data.token);
+           localStorage.setItem('token',data.token)
+            
+            this.setState({success:y,isLoggedIn:true})
           }).error(error=>{
             // console.log(error.data)
            
@@ -58,6 +64,8 @@ class Login extends Component {
         return ( 
               
 
+
+
               <div className='form-group' style={{
           backgroundColor:'#e0ece4',
           height:600
@@ -66,12 +74,14 @@ class Login extends Component {
          >
          <UserContext.Consumer>
               {
-                data =><div>{data.status.userInfo.name}</div>
-              
-
+                data =>
+                {/* <div>{data.name}
+                </div> */}
               
               }
               </UserContext.Consumer>
+
+              
         <div style={{
         paddingTop:60,paddingBottom:180
       }}>
@@ -117,6 +127,7 @@ class Login extends Component {
           </form>
           </div>
         </div> 
+
         );
     }
 }

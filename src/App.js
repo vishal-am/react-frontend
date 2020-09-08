@@ -22,26 +22,64 @@ import {
 class App extends Component {
 
     state={
-      status:{
-        isLoggedIn:'thisis the app state data',
-        userInfo:''
-      }
+      isLoggedIn:false,
+      userToken:'',
+      name:''
     }
-  
+    data={
+      isLoggedIn:false,
+      userToken:'',
+      name:''
+    }
+
+    noneDisplay={
+      display:'none'
+    }
+    displayIt={
+      display:'inline'
+    }
     componentDidMount=()=>{
       // if (localStorage.getItem('token') !== null ){
       //   this.setState({tokenSet:true, inOutKey:'Logout'})
       // }
-      this.setState({status:{...this.state.status,
-        userInfo:Jwt(localStorage.getItem('token'))
-      }
-    }
-  );
+      
 
 
+      if(localStorage.getItem('token') !== ''){
+        
+        try {
+          // let {userToken,name,isLoggedIn} = this.state;
+           let token = Jwt(localStorage.getItem('token'));
+
+          this.setState({
+            userToken : token,
+            name :token.name,
+            isLoggedIn :true
+          })
+          
+          // valid token format
+        } catch(error) {
+          // invalid token format
+        }
+      
+        
+
+      //   this.setState({
+      //     user:Jwt(localStorage.getItem('token'))
+            
+      //   }
+      // )
+      // this.state.userName = this.state.user.name
+
     }
+    // localStorage.clear();
+  }
+
+
   render(){
-    console.log(this.state.status)
+    
+    console.log(this.state)
+    // console.log('state.status',this.state.user.name)
     // console.log(Jwt(localStorage.getItem('token')))
    
   return (
@@ -50,35 +88,43 @@ class App extends Component {
     <div className="App" style={{
       backgroundColor:'#e0ece4'
     }}>
+    
     <Router>
         <nav>
           <ul>
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
+            <li style={this.state.isLoggedIn?this.noneDisplay:this.displayIt} >
               <Link to="/signup">Sign Up</Link>
             </li>
-            <li>
-              <Link to="/login">Sign Up</Link>
+            <li style={this.state.isLoggedIn?this.noneDisplay:this.displayIt} >
+              <Link to='/login' >LogIn</Link>
             </li>
-            {/* <li className='float-right mr-5'>
-            {this.state.status.userInfo.name == ''?'':this.state.status.userInfo.name}
-            </li>    */}
-            {/* <li className='float-right m-5'>
+           
+            <li style={this.state.isLoggedIn?this.displayIt:this.noneDisplay}>
+            {this.state.name}
+            </li>   
+
+            <li style={this.state.isLoggedIn?this.displayIt:this.noneDisplay} >
               <Link to="/logout">LogOut</Link>
-            </li> */}
+            </li>
   
             
           </ul>
         </nav>
 
-        {/* A <Switch> looks through its children <Route>s and
+         <Switch> 
+
+         {/* <li style={this.state.isLoggedIn?this.displayIt:this.noneDisplay}>
+            <h4>{this.state.name}</h4>
+            </li>    */}
+         {/* looks through its children  and
             renders the first one that matches the current URL. */}
-        <Switch>
-        {/* <Route path ='/logout'>
+        
+        <Route path ='/logout'>
             <Logout/>
-          </Route> */}
+          </Route>
           
             <Route path="/login">
             <Login />
@@ -87,6 +133,9 @@ class App extends Component {
           <Route path="/signup">
             <Register />
           </Route>
+          {/* <Route exact path="/">
+              {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />}
+          </Route> */}
 
           <Route path="/">
           <Home/>
@@ -105,3 +154,7 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+ {/* className={this.data.isLoggedIn ? 'd- float-right m-5': 'none'} */}

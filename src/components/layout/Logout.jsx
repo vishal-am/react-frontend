@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import UserContext from './UserContext';
 
 class Logout extends Component {
-    state = {  }
+    state = { 
+        isLoggedIn:true
+     }
 
     handleLogout=()=>{
-        localStorage.setItem('token',null)
-
+        localStorage.setItem('token','');
+        this.setState({
+            isLoggedIn:false
+        })
+        
     }
     
     render() { 
-        return ( <div>
-            <h1>Are you sure, you want to logout!!</h1>
-            <button  onClick={this.handleLogout}>
-Yes
-            </button>
-        </div> );
+        return (
+        <div>
+            <h2>Do You Really Want to LogOut!!</h2>
+            <button  onClick={this.handleLogout}>Logout</button>
+        </div>
+        )
     }
-}
- 
+    }
 export default Logout;
