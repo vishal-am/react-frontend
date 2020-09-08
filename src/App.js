@@ -6,12 +6,14 @@ import Home from './components/Home';
 import Logout from './components/layout/Logout';
 import UserContext from './components/layout/UserContext';
 // import Joi from './components/layout/joi'
-import Jwt from 'jwt-decode'
+import Jwt from 'jwt-decode';
+import Dashboard from './components/layout/Dashboard';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 
 // import Home from './components/Home';
@@ -37,6 +39,10 @@ class App extends Component {
     }
     displayIt={
       display:'inline'
+    }
+    displayItLog={
+      display:'inline',
+      float:'right'
     }
     componentDidMount=()=>{
       // if (localStorage.getItem('token') !== null ){
@@ -78,7 +84,7 @@ class App extends Component {
 
   render(){
     
-    console.log(this.state)
+    console.log(this.state.isLoggedIn)
     // console.log('state.status',this.state.user.name)
     // console.log(Jwt(localStorage.getItem('token')))
    
@@ -102,13 +108,15 @@ class App extends Component {
               <Link to='/login' >LogIn</Link>
             </li>
            
-            <li style={this.state.isLoggedIn?this.displayIt:this.noneDisplay}>
+            <li style={this.state.isLoggedIn?this.displayItLog:this.noneDisplay} >
+              <Link to="/logout">LogOut</Link>
+            </li>
+            
+            <li style={this.state.isLoggedIn?this.displayItLog:this.noneDisplay}>
             {this.state.name}
             </li>   
 
-            <li style={this.state.isLoggedIn?this.displayIt:this.noneDisplay} >
-              <Link to="/logout">LogOut</Link>
-            </li>
+            
   
             
           </ul>
@@ -126,8 +134,9 @@ class App extends Component {
             <Logout/>
           </Route>
           
-            <Route path="/login">
-            <Login />
+            <Route exact path="/login">
+            {/* <Login /> */}
+            {this.state.isLoggedIn ? <Redirect to="/dashboard" /> : <Login />}
           </Route>
 
           <Route path="/signup">
@@ -137,9 +146,14 @@ class App extends Component {
               {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />}
           </Route> */}
 
-          <Route path="/">
-          <Home/>
-          </Route>
+          <Route exact path="/">
+                 {/* {this.state.isLoggedIn ? <Redirect to="/dashboard" /> : <Login />} */}
+                 <Home/>
+              </Route>
+              
+              <Route path="/dashboard">
+                 <Dashboard/>
+              </Route>
           
 
           

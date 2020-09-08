@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import amw from './AMW_Logo.svg';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect
-} from "react-router-dom";
+import { useHistory,Route,Redirect } from "react-router-dom";
 import Joi from  'joi-browser';
 import UserContext from './UserContext';
 
+
 class Login extends Component {
+  //  history = useHistory();
     state = { 
         username:'',
         usernameLength:null,
@@ -21,22 +17,29 @@ class Login extends Component {
         message:null,
         isLoggedIn:false
      }
-
+     
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
         
     }
     
-    handleSubmit = event => {
+     handleSubmit = event => {
         event.preventDefault();
-    
+        
+        
+          // try {
+          //   await Auth.signIn(email, password);
+          //   userHasAuthenticated(true);
+          //   history.push("/");
+          // } 
+
         const user = {
           email: this.state.username,
           password:this.state.password,
         };
 
     try {
-        axios.post('http://localhost:5000/api/users/login',  user)
+       axios.post('http://localhost:5000/api/users/login',  user)
           .then(res => {
               const {data} = res;
             let z = (Object.values(data));
@@ -45,6 +48,7 @@ class Login extends Component {
            localStorage.setItem('token',data.token)
             
             this.setState({success:y,isLoggedIn:true})
+            // history.push("/");
           }).error(error=>{
             // console.log(error.data)
            
@@ -81,7 +85,9 @@ class Login extends Component {
               }
               </UserContext.Consumer>
 
-              
+              <Route exact path="/">
+                 {this.state.isLoggedIn ? <Redirect to="/" /> : <Login />}
+              </Route>
         <div style={{
         paddingTop:60,paddingBottom:180
       }}>
