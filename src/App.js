@@ -10,6 +10,7 @@ import Fontawesome from '@fortawesome/fontawesome-svg-core';
 import './App.css';
 import './styles/App.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import'bootstrap/dist/css/bootstrap.min.css';
 // import 'rsuite/lib/styles/index.less';
 
 //Components Import
@@ -101,7 +102,7 @@ constructor(){
 
   render(){
     
-    console.log(this.state.showSideBar)
+    // console.log(this.state.showSideBar)
    
   return (
     <UserContext.Provider value={{state:this.state,update:this.updateValue}}>

@@ -13,7 +13,7 @@ class LoginBody extends Component {
       }
     render() { 
 
-        console.log('loging body rendor method')
+        // console.log('loging body rendor method')
         return ( 
             <Router>
         <div className="d-flex">

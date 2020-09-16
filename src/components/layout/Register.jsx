@@ -6,7 +6,7 @@ import toastr from 'toastr';
 // import Jo from 'joi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import'bootstrap/dist/css/bootstrap.min.css';
+// import'bootstrap/dist/css/bootstrap.min.css';
 class Register extends Component {
     state = { 
         errors:{
@@ -36,7 +36,7 @@ class Register extends Component {
        const options = {abortEarly:false};
        const {error} = Joi.validate(this.state.account,this.schema,options);
        if (!error)return null;
-       
+       console.log(error)
        const errors = {};
        for (let item of error.details) errors[item.path[0]]= item.message;
        return errors;
