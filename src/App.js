@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import Jwt from 'jwt-decode';
 import {BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 import Fontawesome from '@fortawesome/fontawesome-svg-core';
-
+import Moment from 'moment';
 
 //Style Import
 import './App.css';
@@ -23,8 +23,9 @@ import {getUser} from './services/authService';
 import ExampleHooks from './components/layout/exampleHooks';
 import LoginBody from './components/layout/LoginBody';
 import Header from './components/layout/Header';
-import EditLog from './components/layout/EditLog';
-import Futer from './components/layout/Futer';
+import ShowLogs from './components/layout/ShowLogs';
+// import Futer from './components/layout/Futer';
+
 
 //Contexts import
 import UserContext from './components/layout/UserContext';
@@ -103,11 +104,13 @@ constructor(){
   render(){
     
     // console.log(this.state.showSideBar)
+    // console.log(Moment)
    
   return (
     <UserContext.Provider value={{state:this.state,update:this.updateValue}}>
       
-      <div className="App" style={{backgroundColor:'#e0ece4'}}>
+      <div className="App" style={{backgroundColor:'#e0ece4',
+      }}>
     <Router>
 
       {/* Components Belo Here */}
@@ -118,8 +121,8 @@ constructor(){
 
       <Switch>   
       
-          <Route path='/editlog'>
-            <EditLog/>
+          <Route path='/showlogs'>
+            <ShowLogs/>
           </Route>              
           <Route exact path="/login" >
           {this.state.isLoggedIn ? <Redirect to="/dashboard" /> : <Login />}

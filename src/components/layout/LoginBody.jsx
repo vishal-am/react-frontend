@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import { Alert } from 'rsuite';
 import {BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 import AddLogs from './AddLogs'
-import EditLog from './EditLog';
+import ShowLogs from './ShowLogs';
 
 class LoginBody extends Component {
     state = {  }
@@ -22,12 +22,10 @@ class LoginBody extends Component {
 
             {/* <Route exact path='/addlogs' component={AddLogs}/> */}
         <Switch> 
-<Route path='editlog'>
-  <EditLog></EditLog>
-</Route>
 
-         <Route path='/editlog'>
-           <EditLog/>
+
+         <Route path='/showlogs'>
+           <ShowLogs/>
          </Route>
           <Route path='/addlogs'>
             <AddLogs/>

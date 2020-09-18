@@ -5,8 +5,7 @@ import { GiHamburgerMenu,FaGithub,FaBeer ,FaBars,FaPlus, FaTimes,FaEdit} from 'r
 import  { Fontawesome}from '@fortawesome/fontawesome-svg-core'
 import {BrowserRouter as Router,Switch,Route,Link,Redirect} from "react-router-dom";
 import {Button,Nav,NavDropdown} from 'react-bootstrap';
-
-
+import { BsTable} from 'react-icons/bs';
 // import AddLogs from './AddLogs';
 
 
@@ -106,8 +105,8 @@ class Sidebar extends Component {
             <Link to='/addlogs' >
                 <Nav.Item className='m-2 text-secondary '> <FaPlus className='m-2'/> Add Logs</Nav.Item>
             </Link>
-            <Link to='/editlog'>
-                <Nav.Item className='m-2 text-secondary ' > <FaEdit className='m-2'/> Edit Logs</Nav.Item>
+            <Link to='/showlogs'>
+                <Nav.Item className='m-2 text-secondary ' > <BsTable className='m-2'/>Show Logs</Nav.Item>
             </Link>
             {/* <Link to='/addlogs'>
                 <Nav.Item className='m-2 text-secondary ' > <FaPlus className='m-2'/> Add Logs</Nav.Item>

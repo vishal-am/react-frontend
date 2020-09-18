@@ -81,9 +81,7 @@ class Register extends Component {
     // if (errors) return 
 
     const errors = this.validate();
-    console.log(errors)
-    
-    
+
     if (errors){
       this.setState({errors});
       return;
